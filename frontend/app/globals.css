@@ -1,0 +1,75 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  --background: #f7f7f5;
+  --surface: #ffffff;
+  --foreground: #171923;
+  --muted: #737784;
+  --primary: #5146d8;
+  --primary-hover: #4238bd;
+  --accent: #a9a2ff;
+  --highlight: #f0b45b;
+  --border: #e7e7e3;
+  --success: #247a57;
+  --warning: #a96b12;
+  --destructive: #c44747;
+  --space-unit: 4px;
+}
+
+* { box-sizing: border-box; }
+html { min-height: 100%; background: var(--background); }
+body {
+  margin: 0;
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+button, a { font: inherit; }
+a { color: inherit; }
+button:focus-visible, a:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+::selection { color: white; background: var(--primary); }
+
+.workspace { min-height: 100vh; display: grid; grid-template-columns: 248px minmax(0, 1fr); }
+.sidebar { display: flex; flex-direction: column; padding: 28px 18px; border-right: 1px solid var(--border); background: var(--surface); }
+.brand { display: flex; align-items: center; gap: 10px; margin: 0 12px 48px; font-size: 17px; font-weight: 700; letter-spacing: .13em; }
+.brand-mark { display: inline-grid; place-items: center; width: 27px; height: 27px; border-radius: 8px 8px 8px 2px; color: white; background: var(--primary); font-size: 14px; letter-spacing: 0; }
+.nav-label { margin: 0 12px 10px; color: var(--muted); font-size: 10px; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
+.nav-item { display: flex; align-items: center; gap: 12px; min-height: 42px; margin: 2px 0; padding: 0 12px; border-radius: 6px; color: #555965; font-size: 13px; text-decoration: none; }
+.nav-item[aria-current="page"] { color: var(--primary); background: #f0efff; font-weight: 600; }
+.nav-mark { width: 7px; height: 7px; border: 1.5px solid currentColor; border-radius: 2px; }
+.sidebar-note { margin-top: auto; padding: 16px 12px 4px; border-top: 1px solid var(--border); color: var(--muted); font-size: 11px; line-height: 1.6; }
+.main { width: 100%; max-width: 1440px; margin: 0 auto; padding: 42px clamp(24px, 5vw, 72px) 64px; }
+.topline { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding-bottom: 22px; border-bottom: 1px solid var(--border); }
+.eyebrow { margin: 0 0 8px; color: var(--muted); font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; }
+h1 { margin: 0; font-size: clamp(28px, 3vw, 38px); font-weight: 600; letter-spacing: -.045em; line-height: 1.15; }
+.top-note { color: var(--muted); font-size: 12px; }
+.intro { max-width: 650px; margin: 38px 0 34px; }
+.intro p { margin: 14px 0 0; color: #626673; font-size: 15px; line-height: 1.7; }
+.section-heading { display: flex; align-items: baseline; justify-content: space-between; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
+.section-heading h2 { margin: 0; font-size: 14px; font-weight: 650; }
+.section-heading span { color: var(--muted); font-size: 11px; }
+.empty-state { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 48px; align-items: center; padding: 40px 0 36px; }
+.empty-copy { max-width: 540px; }
+.empty-copy h3 { margin: 0 0 10px; font-size: 20px; font-weight: 550; letter-spacing: -.025em; }
+.empty-copy p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.7; }
+.setup-note { padding: 17px 18px; border-left: 2px solid var(--highlight); background: #fffdf8; }
+.setup-note strong { display: block; margin-bottom: 7px; font-size: 12px; }
+.setup-note p { margin: 0; color: var(--muted); font-size: 11px; line-height: 1.6; }
+.footerline { margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border); color: var(--muted); font-size: 11px; }
+@media (max-width: 760px) {
+  .workspace { grid-template-columns: 1fr; }
+  .sidebar { padding: 17px 18px 10px; border-right: 0; border-bottom: 1px solid var(--border); }
+  .brand { margin: 0 2px 16px; }
+  .nav-label, .sidebar-note { display: none; }
+  .nav-list { display: flex; gap: 6px; overflow-x: auto; }
+  .nav-item { min-width: max-content; }
+  .main { padding: 28px 22px 42px; }
+  .topline { align-items: flex-start; }
+  .top-note { max-width: 110px; text-align: right; line-height: 1.5; }
+  .empty-state { grid-template-columns: 1fr; gap: 24px; }
+}
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; } }
