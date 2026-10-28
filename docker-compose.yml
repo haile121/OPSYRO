@@ -1,0 +1,29 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-opsyro}
+      POSTGRES_USER: ${POSTGRES_USER:-opsyro}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-opsyro}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - opsyro-postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-opsyro} -d ${POSTGRES_DB:-opsyro}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+volumes:
+  opsyro-postgres:
