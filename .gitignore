@@ -1,0 +1,16 @@
+node_modules/
+.next/
+out/
+coverage/
+*.tsbuildinfo
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+.env.*
+!.env.example
+staticfiles/
+*.sqlite3
+.idea/
+.vscode/
