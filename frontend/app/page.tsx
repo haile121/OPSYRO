@@ -1,46 +1,15 @@
-const navItems = [{ label: "Overview", active: true }];
+import Link from "next/link";
 
 export default function HomePage() {
-  return (
-    <div className="workspace">
-      <aside className="sidebar" aria-label="Workspace navigation">
-        <div className="brand"><span className="brand-mark" aria-hidden="true">O</span> OPSYRO</div>
-        <p className="nav-label">Workspace</p>
-        <nav className="nav-list" aria-label="Main">
-          {navItems.map((item) => (
-            <a className="nav-item" href="#overview" aria-current={item.active ? "page" : undefined} key={item.label}>
-              <span className="nav-mark" aria-hidden="true" />{item.label}
-            </a>
-          ))}
-        </nav>
-        <p className="sidebar-note">Audience curiosity, made visible.<br />Creator workspace foundation</p>
-      </aside>
-
-      <main className="main" id="overview">
-        <header className="topline">
-          <div><p className="eyebrow">Creator workspace</p><h1>Overview</h1></div>
-          <span className="top-note">Foundation · Phase 1</span>
-        </header>
-        <section className="intro" aria-labelledby="intro-title">
-          <p className="eyebrow">Audience understanding</p>
-          <h2 id="intro-title">See what your audience wants to understand.</h2>
-          <p>OPSYRO will bring moments of curiosity and audience questions together, so creators can see what matters and respond with intent.</p>
-        </section>
-        <section aria-labelledby="signals-title">
-          <div className="section-heading"><h2 id="signals-title">Audience signals</h2><span>Not connected</span></div>
-          <div className="empty-state">
-            <div className="empty-copy">
-              <h3>Your signal workspace is ready to take shape.</h3>
-              <p>There are no sessions or audience signals yet. Session creation and signal collection will arrive in later implementation phases. No activity is simulated here.</p>
-            </div>
-            <aside className="setup-note" aria-label="Current integration status">
-              <strong>Integration status</strong>
-              <p>This workspace is a local foundation. Twitch authorization and live session data are not configured.</p>
-            </aside>
-          </div>
-        </section>
-        <footer className="footerline">OPSYRO · Audience intelligence for interactive media</footer>
-      </main>
-    </div>
-  );
+  return <main className="site">
+    <header className="site-nav"><Link className="wordmark" href="/">◢ OPSYRO</Link><nav><a href="#product">Product</a><a href="#method">How it works</a><Link href="/workspace">Workspace</Link></nav><Link className="nav-action" href="/demo">Try the sample ↗</Link></header>
+    <section className="hero" id="product"><div className="hero-copy"><p className="eyebrow">AUDIENCE INTELLIGENCE FOR INTERACTIVE MEDIA</p><h1>See what your audience wants to <em>understand.</em></h1><p className="hero-deck">OPSYRO turns moments of curiosity into shared signals, helping creators see what matters and respond with intent.</p><div className="hero-actions"><Link className="primary-action" href="/demo">Explore the sample <span>↗</span></Link><a className="text-action" href="#method">See how it works ↓</a></div><p className="disclosure"><i /> Product in development · Sample data only</p></div>
+      <div className="hero-visual"><div className="visual-label"><span>FIELD NOTES / 04</span><span className="sample-tag">SAMPLE SESSION</span></div><div className="radio-scene"><span className="scene-overline">RESTORATION, LIVE</span><span className="scene-title">Inside the<br/>shortwave radio</span><div className="radio"><div className="radio-window"><i /></div><div className="radio-speaker"><i /></div><div className="radio-dial"><i /></div></div><span className="signal-point">12 curious here</span><span className="scene-caption">A moment marked by the audience ↗</span></div><div className="question-slip"><small>A QUESTION TAKING SHAPE</small><p>“What does the amber dial change?”</p><span><i>J</i><i>M</i><i>A</i> 8 viewers wondered this</span></div><span className="visual-index">01 — NOTICE</span></div>
+    </section>
+    <section className="promise"><span>BEYOND THE VIEW COUNT</span><p>Know what caught their attention,<br/>what they’re asking, and what helped.</p><b>O<span>.</span></b></section>
+    <section className="method" id="method"><div className="method-intro"><p className="eyebrow">FROM CURIOSITY TO CLARITY</p><h2>A better way<br/>to read the room.</h2><p>Attention is the beginning of a question. OPSYRO gives creators a way to notice, understand, and respond.</p></div><div className="steps"><article><small>01</small><div><h3>Notice</h3><p>Viewers mark the moment, detail, or idea that caught their attention.</p></div><span className="step-mark">⌖</span></article><article><small>02</small><div><h3>Understand</h3><p>Related questions and points of interest come together as shared signals.</p></div><span className="step-mark">◎</span></article><article><small>03</small><div><h3>Respond</h3><p>Creators answer what matters, then learn whether the response helped.</p></div><span className="step-mark">↗</span></article></div></section>
+    <section className="try-section"><div><p className="eyebrow">A HANDS-ON SAMPLE</p><h2>Curiosity is easier to understand when you can see it.</h2></div><div><p>Mark a detail in a sample frame, add a question, and see how a creator might respond. Your activity stays in this browser.</p><Link className="primary-action" href="/demo">Try the interactive demo ↗</Link></div></section>
+    <aside className="privacy-note"><b>◎</b><p><strong>Sample means sample.</strong><br/>The demo uses example content and browser-only interactions. It does not connect to Twitch or send responses to a server.</p><small>PRIVACY BY DESIGN</small></aside>
+    <footer className="site-footer"><Link className="wordmark" href="/">◢ OPSYRO</Link><span>Make audience curiosity visible.</span><Link href="/workspace">Creator workspace ↗</Link><small>© OPSYRO · Early product foundation</small></footer>
+  </main>;
 }
