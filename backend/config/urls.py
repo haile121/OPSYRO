@@ -10,6 +10,7 @@ def health(request):
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/health/", health, name="health"),
+    path("api/v1/auth/twitch/", include("apps.twitch.oauth_urls")),
     path("api/auth/", include("apps.accounts.urls")),
     path("api/sessions/", include("apps.sessions.urls")),
     path("api/signals/", include("apps.signals.urls")),
