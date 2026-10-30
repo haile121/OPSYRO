@@ -1,6 +1,6 @@
 import os
 from pathlib import Path
-from urllib.parse import unquote, urlparse
+from urllib.parse import parse_qs, unquote, urlparse
 
 from dotenv import load_dotenv
 
@@ -77,8 +77,16 @@ WSGI_APPLICATION = "config.wsgi.application"
 ASGI_APPLICATION = "config.asgi.application"
 
 DATABASE_URL = os.getenv("DATABASE_URL")
+POSTGRES_HOST = os.getenv("POSTGRES_HOST", "127.0.0.1")
+_database_host = (urlparse(DATABASE_URL).hostname if DATABASE_URL else POSTGRES_HOST) or POSTGRES_HOST
+_default_sslmode = "require" if _database_host.lower().endswith("supabase.com") else "prefer"
+POSTGRES_SSLMODE = os.getenv(
+    "POSTGRES_SSLMODE",
+    _default_sslmode,
+)
 if DATABASE_URL:
     parsed_database_url = urlparse(DATABASE_URL)
+    database_sslmode = parse_qs(parsed_database_url.query).get("sslmode", [POSTGRES_SSLMODE])[0]
     DATABASES = {"default": {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": unquote(parsed_database_url.path.lstrip("/")),
@@ -87,7 +95,7 @@ if DATABASE_URL:
         "HOST": parsed_database_url.hostname or "127.0.0.1",
         "PORT": str(parsed_database_url.port or 5432),
         "CONN_MAX_AGE": 60,
-        "OPTIONS": {"connect_timeout": 3},
+        "OPTIONS": {"connect_timeout": 3, "sslmode": database_sslmode},
     }}
 else:
     DATABASES = {"default": {
@@ -95,13 +103,21 @@ else:
         "NAME": os.getenv("POSTGRES_DB", "opsyro"),
         "USER": os.getenv("POSTGRES_USER", "opsyro"),
         "PASSWORD": os.getenv("POSTGRES_PASSWORD", "opsyro"),
-        "HOST": os.getenv("POSTGRES_HOST", "127.0.0.1"),
+        "HOST": POSTGRES_HOST,
         "PORT": os.getenv("POSTGRES_PORT", "5432"),
         "CONN_MAX_AGE": 60,
-        "OPTIONS": {"connect_timeout": 3},
+        "OPTIONS": {"connect_timeout": 3, "sslmode": POSTGRES_SSLMODE},
     }}
 
 TWITCH_EXTENSION_SECRET = os.getenv("TWITCH_EXTENSION_SECRET", "")
+TWITCH_CLIENT_ID = os.getenv("TWITCH_CLIENT_ID", "")
+TWITCH_CLIENT_SECRET = os.getenv("TWITCH_CLIENT_SECRET", "")
+TWITCH_TOKEN_ENCRYPTION_KEY = os.getenv("TWITCH_TOKEN_ENCRYPTION_KEY", "")
+TWITCH_REDIRECT_URI = os.getenv(
+    "TWITCH_REDIRECT_URI",
+    "http://localhost:8000/api/v1/auth/twitch/callback",
+)
+TWITCH_OAUTH_RETURN_URL = os.getenv("TWITCH_OAUTH_RETURN_URL", "http://localhost:3000/workspace")
 REDIS_URL = os.getenv("REDIS_URL")
 if REDIS_URL:
     CHANNEL_LAYERS = {"default": {"BACKEND": "channels_redis.core.RedisChannelLayer", "CONFIG": {"hosts": [REDIS_URL]}}}
