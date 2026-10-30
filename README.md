@@ -47,6 +47,7 @@ Open `http://localhost:3000`. The API health endpoint is `http://localhost:8000/
 - For a live local session, use **Viewer preview** to submit a signal. Review attention and grouped questions, draft and publish a reply, then submit viewer feedback.
 - Experiment log: `/workspace/experiments`. Record a hypothesis and change, link owned sessions, track planned/active/completed status, and save an outcome note.
 - Twitch Extension: see [docs/twitch-extension.md](docs/twitch-extension.md). The project includes the viewer bundle and server-side signature/expiry verification, but needs a Twitch Extension secret and developer-console setup to run inside Twitch.
+- Twitch account OAuth: sign in to OPSYRO and use **Connect Twitch** in the workspace. Register `http://localhost:8000/api/v1/auth/twitch/callback` as the local Twitch OAuth Redirect URL. Set `TWITCH_CLIENT_ID`, `TWITCH_CLIENT_SECRET`, and a generated Fernet key in `TWITCH_TOKEN_ENCRYPTION_KEY` in the backend environment. Tokens are encrypted in the database; the workspace status endpoint returns only the authenticated Twitch profile.
 
 The browser preview and Twitch Extension keep a random per-tab participant key and do not submit a Twitch username. These are pseudonymous signals, not a guarantee of anonymity. Signals and feedback remain stored until database cleanup; account deletion and retention controls are not implemented.
 
@@ -57,7 +58,7 @@ The browser preview and Twitch Extension keep a random per-tab participant key a
 - Audience signals: `POST /api/signals/` accepts a live session token, bounded normalized coordinates, intent, question text, and idempotency key; submissions are rate limited.
 - Responses and feedback: `/api/responses/` manages owner-only drafts and publication; `/api/feedback/` accepts viewer helpfulness and exposes published replies with aggregate counts.
 - Experiments: `/api/experiments/` stores owner-scoped learning logs linked only to the creator’s own sessions.
-- Twitch: `/api/twitch/extension/session/` verifies the Extension JWT with the server secret and resolves a live session by channel ID. The browser never receives the secret.
+- Twitch: `/api/twitch/extension/session/` verifies the Extension JWT with the server secret and resolves a live session by channel ID. OAuth uses `/api/v1/auth/twitch/authorize/`, `/api/v1/auth/twitch/callback`, and `/api/v1/auth/twitch/status/`; the client secret and access tokens stay on the backend. The browser viewer preview is available independently of Twitch Extension event ingestion.
 - Creator WebSocket: `/ws/sessions/{id}/` requires the owner’s authenticated session cookie; event payloads omit participant keys.
 
 PostgreSQL is the persistent source of truth. Redis can back Channels and shared throttling when `REDIS_URL` is set; without it, development uses process-local memory. Deployment setup is in [docs/deployment.md](docs/deployment.md). The Render Blueprint and Vercel config are templates requiring project-specific origins, account setup, and secret values.
