@@ -1,4 +1,5 @@
 export type Creator = { id: number; username: string; email: string; first_name: string; last_name: string };
+export type TwitchConnection = { connected: boolean; profile: { id: string; login: string; display_name: string; profile_image_url: string } | null };
 export type CreatorSession = { id: number; title: string; description: string; twitch_channel_id: string; status: "draft" | "live" | "ended"; public_token: string; created_at: string; started_at: string | null; ended_at: string | null };
 export type CreatorResponse = { id: number; cluster_id: number; text: string; status: "draft" | "published"; feedback_count: number; helpful_count: number; created_at: string; updated_at: string; published_at: string | null };
 export type QuestionCluster = { id: number; label: string; region_key: string; signal_count: number; example_questions: string[]; creator_response: CreatorResponse | null; created_at: string; updated_at: string };
@@ -27,6 +28,7 @@ export const api = {
   login: (data: { username: string; password: string }) => request<Creator>("/api/auth/login/", json("POST", data)),
   logout: () => request<void>("/api/auth/logout/", json("POST")),
   me: () => request<Creator>("/api/auth/me/"),
+  twitchConnection: () => request<TwitchConnection>("/api/v1/auth/twitch/status/"),
   sessions: async () => (await request<{ results: CreatorSession[] }>("/api/sessions/")).results,
   session: (id: string) => request<CreatorSession>(`/api/sessions/${id}/`),
   questions: (id: string) => request<QuestionCluster[]>(`/api/sessions/${id}/questions/`),
